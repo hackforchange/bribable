@@ -10,9 +10,14 @@ require 'pp'
 class BribableApp < Sinatra::Base
   configure do
     Mongoid.configure do |config|
-      uri = URI.parse(ENV['MONGOHQ_URL'])
-      conn = Mongo::Connection.from_uri(ENV['MONGOHQ_URL'])
-      config.master = conn.db(uri.path.gsub(/^\//, ''))
+      if ENV['MONGOHQ_URL']
+        uri = URI.parse(ENV['MONGOHQ_URL'])
+        conn = Mongo::Connection.from_uri(ENV['MONGOHQ_URL'])
+        config.master = conn.db(uri.path.gsub(/^\//, ''))
+      else
+        conn = Mongo::Connection.new("localhost")
+        config.master = conn.db("bribabble_development")
+      end
     end
   end
 
