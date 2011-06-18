@@ -2,7 +2,7 @@ $:.unshift File.join(File.expand_path(File.dirname(__FILE__)))
 
 require 'uri'
 require 'mongo'
-require 'sinatra/base'
+require 'sinatra'
 require 'mongoid'
 require 'message'
 require 'pp'

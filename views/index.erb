@@ -10,14 +10,30 @@
   var base_location = new google.maps.LatLng(40.69847032728747, -73.9514422416687);
   var browserSupportFlag =  new Boolean();
   var map;
-  var infowindow = new google.maps.InfoWindow();
+  var center_circle = {
+        strokeColor: "#FF0000",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#FF0000",
+        fillOpacity: 0.35,
+        radius: 100,
+        map: map,
+        center: map.getCenter()
+      };
+      
+  
+  function centerReticle(){
+    cityCircle.setCenter(map.getCenter());
+  }  
 
   function initialize() {
     var myOptions = {
-      zoom: 8,
+      zoom: 9,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    cityCircle = new google.maps.Circle(center_circle);
+  
 
     // Try W3C Geolocation method (Preferred)
     if(navigator.geolocation) {
@@ -54,12 +70,26 @@
     }
     map.setCenter(initialLocation);
   }
+  
+
+   
+  
   </script>
+  
+  <style>
+  #map {
+    height: 250px;
+  }
+  </style>
 </head>
 <body onload="initialize()">
 <form action="/messages" accept-charset="UTF-8" method="post" id="corrupt-form" enctype="multipart/form-data">
-  <textarea name="message" rows="8" cols="40"></textarea>
-  <div id="map_canvas"></div> 
+  <fieldset id="map">
+  <div id="map_canvas" style="width: 350px; height: 200px"></div> 
+  </fieldset>
+  <fieldset>
+    <textarea name="message" rows="8" cols="40"></textarea>
+  </fieldset>  
   <input type="submit" name="op" id="edit-submit-1" value="Submit" class="form-submit">
 </form>
 </body>
