@@ -1,5 +1,7 @@
 $:.unshift File.join(File.expand_path(File.dirname(__FILE__)))
 
+require 'uri'
+require 'mongo'
 require 'sinatra/base'
 require 'mongoid'
 require 'message'
@@ -10,14 +12,14 @@ class BribableApp < Sinatra::Base
   
   configure do
     Mongoid.configure do |config|
-      name = "mongoid_development"
-      host = "localhost"
-      config.allow_dynamic_fields = false
-      config.master = Mongo::Connection.new.db(name)
-#      config.slaves = [
-#        Mongo::Connection.new(host, 27018, :slave_ok => true).db(name),
-#        Mongo::Connection.new(host, 27019, :slave_ok => true).db(name)
-#      ]
+      if ENV['MONGOHQ_URL']
+        uri = URI.parse(ENV['MONGOHQ_URL'])
+        conn = Mongo::Connection.from_uri(ENV['MONGOHQ_URL'])
+        config.master = conn.db(uri.path.gsub(/^\//, ''))
+      else
+        conn = Mongo::Connection.new("localhost")
+        config.master = conn.db("bribabble_development")
+      end
     end
   end
 
