@@ -4,12 +4,13 @@ require 'uri'
 require 'mongo'
 require 'sinatra/base'
 require 'mongoid'
+require 'mongoid_geo'
 require 'message'
 require 'pp'
 require 'erb'
 
 class BribableApp < Sinatra::Base
-  
+
   configure do
     Mongoid.configure do |config|
       if ENV['MONGOHQ_URL']
@@ -18,6 +19,7 @@ class BribableApp < Sinatra::Base
         config.master = conn.db(uri.path.gsub(/^\//, ''))
       else
         conn = Mongo::Connection.new("localhost")
+        config.autocreate_indexes = true
         config.master = conn.db("bribabble_development")
       end
     end
@@ -28,14 +30,16 @@ class BribableApp < Sinatra::Base
   end
 
   post '/messages' do
-    message = Message.new(:message => params['message'])
+    message = Message.new(:message => params['message'], :location => [])
     message.save
   end
 
   get '/messages' do
-    Message.all.to_json
-  end
-  
+    latitude = params['lat'].to_i
+    longitude = params['long'].to_i
 
-  
+    if latitude && longitude
+      Message.near(:location => [latitude, longitude]).to_json
+    end
+  end
 end

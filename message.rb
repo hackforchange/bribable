@@ -3,5 +3,7 @@ class Message
   include Mongoid::Timestamps
 
   field :message
-  field :location
+  field :location, :type => Array, :geo => true
+
+  geo_index :location
 end
