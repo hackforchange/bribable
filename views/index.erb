@@ -1,0 +1,66 @@
+<html>
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" /> 
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
+  <script type="text/javascript" src="http://code.google.com/apis/gears/gears_init.js"></script> 
+  <script type="text/javascript"> 
+
+  var initialLocation;
+  var base_location = new google.maps.LatLng(40.69847032728747, -73.9514422416687);
+  var browserSupportFlag =  new Boolean();
+  var map;
+  var infowindow = new google.maps.InfoWindow();
+
+  function initialize() {
+    var myOptions = {
+      zoom: 8,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+    // Try W3C Geolocation method (Preferred)
+    if(navigator.geolocation) {
+      browserSupportFlag = true;
+      navigator.geolocation.getCurrentPosition(function(position) {
+        initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+        map.setCenter(initialLocation);
+      }, function() {
+        handleNoGeolocation(browserSupportFlag);
+      });
+    } else if (google.gears) {
+      // Try Google Gears Geolocation
+      browserSupportFlag = true;
+      var geo = google.gears.factory.create('beta.geolocation');
+      geo.getCurrentPosition(function(position) {
+        initialLocation = new google.maps.LatLng(position.latitude,position.longitude);
+      }, function() {
+        handleNoGeolocation(browserSupportFlag);
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      browserSupportFlag = false;
+      handleNoGeolocation(browserSupportFlag);
+    }
+  }
+
+  function handleNoGeolocation(errorFlag) {
+    if (errorFlag == true) {
+      initialLocation = base_location;
+      contentString = "Error: The Geolocation service failed.";
+    } else {
+      initialLocation = base_location;
+      contentString = "Error: Your browser doesn't support geolocation";
+    }
+    map.setCenter(initialLocation);
+  }
+  </script>
+</head>
+<body onload="initialize()">
+<form action="/messages" accept-charset="UTF-8" method="post" id="corrupt-form" enctype="multipart/form-data">
+  <textarea name="message" rows="8" cols="40"></textarea>
+  <div id="map_canvas"></div> 
+  <input type="submit" name="op" id="edit-submit-1" value="Submit" class="form-submit">
+</form>
+</body>
+</html>

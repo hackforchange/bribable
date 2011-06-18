@@ -4,8 +4,10 @@ require 'sinatra/base'
 require 'mongoid'
 require 'message'
 require 'pp'
+require 'erb'
 
 class BribableApp < Sinatra::Base
+  
   configure do
     Mongoid.configure do |config|
       name = "mongoid_development"
@@ -20,7 +22,7 @@ class BribableApp < Sinatra::Base
   end
 
   get '/' do
-    "Hello World"
+    erb :index
   end
 
   post '/messages' do
@@ -31,4 +33,7 @@ class BribableApp < Sinatra::Base
   get '/messages' do
     Message.all.to_json
   end
+  
+
+  
 end
