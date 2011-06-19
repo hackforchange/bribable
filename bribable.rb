@@ -8,6 +8,10 @@ require 'mongoid_geo'
 require 'message'
 require 'pp'
 require 'erb'
+require 'carrierwave'
+require 'image_uploader'
+
+set :public, 'public'
 
 class BribableApp < Sinatra::Base
   :static
@@ -23,14 +27,34 @@ class BribableApp < Sinatra::Base
         config.master = conn.db("bribabble_development")
       end
     end
+    CarrierWave.configure do |config|
+      config.grid_fs_database = Mongoid.database.name
+      config.grid_fs_host = Mongoid.config.master.connection.host
+      config.storage = :grid_fs
+      config.grid_fs_access_url = "/images"
+    end
   end
 
   get '/' do
     erb :index
   end
 
+  get '/images/uploads/*' do
+    gridfs_path = env["PATH_INFO"].gsub("/images/", "")
+    begin
+      gridfs_file = Mongo::GridFileSystem.new(Mongoid.database).open(gridfs_path, 'r')
+      self.response_body = gridfs_file.read
+      self.content_type = gridfs_file.content_type
+    rescue
+      self.status = :file_not_found
+      self.content_type = 'text/plain'
+      self.response_body = ''
+    end
+  end
+
   post '/messages' do
-    message = Message.new(:message => params['message'], :location => [])
+    pp params
+    message = Message.new(:message => params['message'])
     message.save
   end
 

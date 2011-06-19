@@ -1,91 +1,92 @@
 <html>
 <head>
-  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-  <link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" /> 
-  <link rel="stylesheet" type="text/css" media="all" href="stylesheets/style.css" />  
-  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> 
-  <script type="text/javascript"> 
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+  <link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css"/>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+  <script type="text/javascript">
 
-  var initialLocation;
-  var base_location = new google.maps.LatLng(40.69847032728747, -73.9514422416687);
-  var browserSupportFlag =  new Boolean();
-  var map;
+    var initialLocation;
+    var base_location = new google.maps.LatLng(40.69847032728747, -73.9514422416687);
+    var browserSupportFlag = new Boolean();
+    var map;
 
-  function resetFormValues(map) {
-    $('input#long').val(map.getCenter().lng());
-    $('input#lat').val(map.getCenter().lat());    
-  }
-
-
-  function initialize() {
-    var myOptions = {
-      zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-
-
-    // Try W3C Geolocation method (Preferred)
-    if(navigator.geolocation) {
-      browserSupportFlag = true;
-      navigator.geolocation.getCurrentPosition(function(position) {
-        initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-        map.setCenter(initialLocation);
-
-        var center_circle = {
-               strokeColor: "#5FB221",
-               strokeOpacity: 1,
-               strokeWeight: 1,
-               fillColor: "#5FB221",
-               fillOpacity: 1,
-               radius: 50,
-               map: map,
-               center: map.getCenter()
-             };
-
-         cityCircle = new google.maps.Circle(center_circle);
-         google.maps.event.addListener(map, 'bounds_changed', function() {cityCircle.setCenter(map.getCenter());
-           resetFormValues(map);
-           });
-         
-      }, function() {
-        handleNoGeolocation(browserSupportFlag);
-      });
-    } else if (google.gears) {
-      // Try Google Gears Geolocation
-      browserSupportFlag = true;
-      var geo = google.gears.factory.create('beta.geolocation');
-      geo.getCurrentPosition(function(position) {
-        initialLocation = new google.maps.LatLng(position.latitude,position.longitude);
-      }, function() {
-        handleNoGeolocation(browserSupportFlag);
-      });
-    } else {
-      // Browser doesn't support Geolocation
-      browserSupportFlag = false;
-      handleNoGeolocation(browserSupportFlag);
+    function resetFormValues(map) {
+      $('input#long').val(map.getCenter().lng());
+      $('input#lat').val(map.getCenter().lat());
     }
- 
-    
-  }
 
-  function handleNoGeolocation(errorFlag) {
-    if (errorFlag == true) {
-      initialLocation = base_location;
-      contentString = "Error: The Geolocation service failed.";
-    } else {
-      initialLocation = base_location;
-      contentString = "Error: Your browser doesn't support geolocation";
+    function initialize() {
+      var myOptions = {
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+
+      // Try W3C Geolocation method (Preferred)
+      if (navigator.geolocation) {
+        browserSupportFlag = true;
+        navigator.geolocation.getCurrentPosition(function(position) {
+          initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          map.setCenter(initialLocation);
+
+          var center_circle = {
+            strokeColor: "#FF0000",
+            strokeOpacity: 1,
+            strokeWeight: 1,
+            fillColor: "#FF0000",
+            fillOpacity: .2,
+            radius: 50,
+            map: map,
+            center: map.getCenter()
+          };
+
+          cityCircle = new google.maps.Circle(center_circle);
+          google.maps.event.addListener(map, 'bounds_changed', function() {
+            cityCircle.setCenter(map.getCenter());
+            resetFormValues(map);
+          });
+
+        }, function() {
+          handleNoGeolocation(browserSupportFlag);
+        });
+      } else if (google.gears) {
+        // Try Google Gears Geolocation
+        browserSupportFlag = true;
+        var geo = google.gears.factory.create('beta.geolocation');
+        geo.getCurrentPosition(function(position) {
+          initialLocation = new google.maps.LatLng(position.latitude, position.longitude);
+        }, function() {
+          handleNoGeolocation(browserSupportFlag);
+        });
+      } else {
+        // Browser doesn't support Geolocation
+        browserSupportFlag = false;
+        handleNoGeolocation(browserSupportFlag);
+      }
+
+
     }
-    map.setCenter(initialLocation);
-  }
+
+    function handleNoGeolocation(errorFlag) {
+      if (errorFlag == true) {
+        initialLocation = base_location;
+        contentString = "Error: The Geolocation service failed.";
+      } else {
+        initialLocation = base_location;
+        contentString = "Error: Your browser doesn't support geolocation";
+      }
+      map.setCenter(initialLocation);
+    }
+
+
   </script>
-  
+
   <style>
-  #map {
-    height: 250px;
-  }
+    #map {
+      height: 250px;
+    }
   </style>
 </head>
 <body onload="initialize()" class="sub">
@@ -94,31 +95,27 @@
       <img src="images/corrupt.png">
       </div>
      </header>
-     <section id="page"> 
-    <header class="page-header"> 
-      <h1>Report Corruption</h1> 
-    </header> 
+     <section id="page">
+    <header class="page-header">
+      <h1>Report Corruption</h1>
+    </header>
     <article>
     <form action="/messages" accept-charset="UTF-8" method="post" id="corrupt-form" enctype="multipart/form-data">
-      <input type="hidden" id="long" name="long" value="love">
-      <input type="hidden" id="lat" name="lat" value="">  
+      <input type="hidden" id="long" name="message[long]" value="">
+      <input type="hidden" id="lat" name="message[lat]" value="">
       <h2>What happened?</h2>
       <p>Type in what happened. Put names in quotes like 'Dr Evil'.</p>
 
-      <textarea id="message" name="message" rows="8" cols="40"></textarea>
-
+      <textarea name="message[message]" rows="8" cols="40"></textarea>
           <h2>Where did this happen?</h2>
           <p>Pinpoint the location as accurately as you can by dragging the map</p>
         <div id="map_container">
-          <div id="map_canvas"></div> 
+          <div id="map_canvas"></div>
         </div>
-        
+
         <h2>Upload an Image</h2>
         <p>Select a file and catch that bastard.</p>
-
-        <input type="file" name="datafile" size="40">
-        
-
+      <input type="file" name="message[image]">
       <input type="submit" name="op" id="submit_corruption" value="Submit" class="form-submit">
 
     </form>
@@ -126,13 +123,6 @@
       <footer id="footer">
         <p><a href="http://www.corrupt.mobi">Corrupt.mobi</a> is a <a href="http://www.hackforchange.com">HackforChange</a> project inspired by <a href="http://hackforchange.uservoice.com/forums/113515-hack-for-change/suggestions/1931313-help-save-monterrey-mexico-if-monterrey-falls-m">Help Save Monterrey, Mexico</a></p>
       </footer>
-    </section>  
-  
-
-</body>
-</html>
-</head>
-
-  
+    </section>
 </body>
 </html>
