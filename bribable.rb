@@ -11,10 +11,9 @@ require 'erb'
 require 'carrierwave'
 require 'image_uploader'
 
-set :public, 'public'
-
 class BribableApp < Sinatra::Base
-  :static
+  set :root, File.dirname(__FILE__)
+
   configure do
     Mongoid.configure do |config|
       if ENV['MONGOHQ_URL']
