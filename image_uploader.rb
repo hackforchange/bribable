@@ -6,6 +6,9 @@ class ImageUploader < CarrierWave::Uploader::Base
     %w(jpg jpeg gif png)
   end
 
+  def default_url
+    "/images/trollface.jpg"
+  end
 
   process :resize_to_fill => [100, 100]
 end
