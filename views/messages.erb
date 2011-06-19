@@ -91,12 +91,21 @@
     </div>
     <ul>
       <% @messages.each do |message| %>
-        <li><%= message["created_at"].strftime("%m/%y/%d %H:%M") %> <%= message["message"] %></li>
+        <% unless message.image.url.blank? %>
+          <li>
+            <img src="
+              <% message.image.url %>">
+          </li>
+        <% end %>
+        <li>
+          <%= message["created_at"].strftime("%m/%y/%d %H:%M") %> <%= message["message"] %>
+        </li>
       <% end %>
     </ul>
   </article>
   <footer id="footer">
-    <p><a href="http://www.corrupt.mobi">Corrupt.mobi</a> is a <a href="http://www.hackforchange.com">HackforChange</a>
+    <p><a href="http://www.corrupt.mobi">Corrupt.mobi</a> is a
+      <a href="http://www.hackforchange.com">HackforChange</a>
       project inspired by
       <a href="http://hackforchange.uservoice.com/forums/113515-hack-for-change/suggestions/1931313-help-save-monterrey-mexico-if-monterrey-falls-m">Help
         Save Monterrey, Mexico</a></p>
