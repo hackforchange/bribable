@@ -28,6 +28,7 @@ class BribableApp < Sinatra::Base
     end
     CarrierWave.configure do |config|
       config.storage = :fog
+      config.cache_dir = "#{BribableApp.root}/tmp/uploads"
       config.fog_credentials = {
         :provider => 'AWS',
         :aws_access_key_id => ENV['S3_KEY'],
