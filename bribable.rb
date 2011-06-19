@@ -14,7 +14,7 @@ require 'image_uploader'
 set :public, 'public'
 
 class BribableApp < Sinatra::Base
-
+  :static
   configure do
     Mongoid.configure do |config|
       if ENV['MONGOHQ_URL']

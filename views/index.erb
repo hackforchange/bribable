@@ -89,18 +89,37 @@
     }
   </style>
 </head>
-<body onload="initialize()">
-<form action="/messages" accept-charset="UTF-8" method="post" id="corrupt-form" enctype="multipart/form-data">
-  <fieldset id="map">
-    <div id="map_canvas" style="width: 350px; height: 200px"></div>
-    <input type="hidden" id="long" name="message[long]" value="">
-    <input type="hidden" id="lat" name="message[lat]" value="">
-  </fieldset>
-  <fieldset>
-    <textarea name="message[message]" rows="8" cols="40"></textarea>
-  </fieldset>
-  <input type="file" name="message[image]">
-  <input type="submit" name="op" id="edit-submit-1" value="Submit" class="form-submit">
-</form>
+<body onload="initialize()" class="sub">
+    <header id="header">
+     </header>
+     <section id="page">
+    <header class="page-header">
+      <h1>Report Corruption</h1>
+    </header>
+    <article>
+    <form action="/messages" accept-charset="UTF-8" method="post" id="corrupt-form" enctype="multipart/form-data">
+      <input type="hidden" id="long" name="message[long]" value="">
+      <input type="hidden" id="lat" name="message[lat]" value="">
+      <h2>What happened?</h2>
+      <p>Type in what happened. Put names in quotes like 'Dr Evil'.</p>
+
+      <textarea name="message[message]" rows="8" cols="40"></textarea>
+          <h2>Where did this happen?</h2>
+          <p>Pinpoint the location as accurately as you can by dragging the map</p>
+        <div id="map_container">
+          <div id="map_canvas"></div>
+        </div>
+
+        <h2>Upload an Image</h2>
+        <p>Select a file and catch that bastard.</p>
+
+      <input type="file" name="message[image]">
+      <input type="submit" name="op" id="edit-submit-1" value="Submit" class="form-submit">
+    </form>
+    </article>
+      <footer id="footer">
+        <p><a href="http://www.corrupt.mobi">Corrupt.mobi</a> is a <a href="http://www.hackforchange.com">HackforChange</a> project inspired by <a href="http://hackforchange.uservoice.com/forums/113515-hack-for-change/suggestions/1931313-help-save-monterrey-mexico-if-monterrey-falls-m">Help Save Monterrey, Mexico</a></p>
+      </footer>
+    </section>
 </body>
 </html>
