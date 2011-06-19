@@ -13,6 +13,14 @@ Version: 0.1
     position:relative;
 }
 
+input#submit_corruption {
+    height: 50px;
+    background: #0f212e;
+    color: white;
+    font: 25px;
+    border: none;
+}
+
 textarea {
     width: 80%;
     height: 150px;
