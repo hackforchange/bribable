@@ -6,11 +6,46 @@
   <link href="stylesheets/style.css" rel="stylesheet" type="text/css"/>
   <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="/javascripts/jquery.timeago.js"></script>
   <script type="text/javascript">
 
     var initialLocation;
     var browserSupportFlag = new Boolean();
     var map;
+
+    function renderMessageMarkers(map) {
+      var lat = map.getCenter().lat();
+      var long = map.getCenter().lng();
+      console.debug(lat);
+      console.debug(long);
+      $.getJSON('/messages?lat=' + lat + '&long=' + long, function(messages) {
+        console.debug(messages);
+
+        $.each(messages, function(index, message) {
+          var newLatLng = new google.maps.LatLng(message["location"][0], message["location"][1]);
+          new google.maps.Marker({
+            position: newLatLng,
+            map: map,
+            title: message["message"]
+          });
+        });
+        renderMessages(messages);
+      });
+    };
+
+    function renderMessages(messages){
+      var messages_div = $("ul#messages");
+      console.debug(messages_div);
+
+      $(messages_div).html("");
+
+      $.each(messages, function(index, message) {
+        $(messages_div).append( "<li>"+ message['message'] + ' '+ jQuery.timeago(message['created_at']) + "</li>");
+      });
+
+      $(messages_div).effect("highlight", {}, 3000);
+    };
 
     function initialize() {
       var myOptions = {
@@ -19,23 +54,27 @@
       };
       map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 
-      <% @messages.each do |message|  %>
-        var newLatLng = new google.maps.LatLng(<%=message["location"][0]%>, <%=message["location"][1]%>);
-        var marker<%=message["_id"]%> = new google.maps.Marker({
-          position: newLatLng,
-          map: map,
-          title:"Hello World!"
-        });
-      <% end %>
-
       // Try W3C Geolocation method (Preferred)
       if (navigator.geolocation) {
         browserSupportFlag = true;
         navigator.geolocation.getCurrentPosition(function(position) {
           initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
           map.setCenter(initialLocation);
+          var center_circle = {
+            strokeColor: "#FF0000",
+            strokeOpacity: 1,
+            strokeWeight: 1,
+            fillColor: "#FF0000",
+            fillOpacity: .2,
+            radius: 50,
+            map: map,
+            center: map.getCenter()
+          };
+
+          cityCircle = new google.maps.Circle(center_circle);
           google.maps.event.addListener(map, 'bounds_changed', function() {
             cityCircle.setCenter(map.getCenter());
+            renderMessageMarkers(map);
           });
 
         }, function() {
@@ -87,18 +126,7 @@
     <div id="corruption_map_container">
       <div id="map_canvas"></div>
     </div>
-    <ul>
-      <% @messages.each do |message| %>
-        <% unless message.image.url.blank? %>
-          <li>
-            <img src="
-              <% message.image.url %>">
-          </li>
-        <% end %>
-        <li>
-          <%= message["created_at"].strftime("%m/%y/%d %H:%M") %> <%= message["message"] %>
-        </li>
-      <% end %>
+    <ul id = 'messages'>
     </ul>
   </article>
   <footer id="footer">

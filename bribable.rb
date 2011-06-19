@@ -69,7 +69,12 @@ class BribableApp < Sinatra::Base
   get '/messages' do
     latitude = params['lat']
     longitude = params['long']
-    @messages = Message.geo_near(:location => [latitude, longitude])
-    erb :messages
+
+    if request.xhr?
+      Message.geo_near([latitude.to_f, longitude.to_f], :location).desc(:created_at).to_json
+    else
+      erb :messages
+    end
   end
 end
+

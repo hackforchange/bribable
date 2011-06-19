@@ -1,4 +1,5 @@
 @import "layout.css";
+
 /*
 Theme Name: jQuery Mobile
 Theme URI: http://jquerymobile.com/
@@ -7,43 +8,57 @@ Author: Hacked together Doug Neiner from TwentyTen
 Version: 0.1
 */
 
-
 #map_container {
-    height: 150px;
-    position:relative;
+  height: 150px;
+  position: relative;
 }
 
 #corruption_map_container {
-    height: 350px;
-    position:relative;
+  height: 350px;
+  position: relative;
 }
 
 input#submit_corruption {
-    background-color: #0f212e;
-    padding: 15px;
-    font-size: 1.75em;
-    color: white;
-    border: none;
-    text-transform: uppercase;
-    margin-top: 25px;
+  background-color: #0f212e;
+  padding: 15px;
+  font-size: 1.75em;
+  color: white;
+  border: none;
+  text-transform: uppercase;
+  margin-top: 25px;
 }
 
 textarea {
-    width: 80%;
-    height: 150px;
+  width: 80%;
+  height: 150px;
 }
 
 #page article {
-    margin-bottom: 25px;
+  margin-bottom: 25px;
 }
 
 #page article h2 {
-font-size: 1.8em !important;
+  font-size: 1.8em !important;
 }
 
 #page article h3 {
-font-size: 1.2em !important;
+  font-size: 1.2em !important;
 }
 
+.sub #page ul#messages {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: hidden;
+}
 
+.sub #page ul#messages li{
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: .5em;
+  list-style-type: none;
+}
 
+.sub #page ul#messages li img{
+  vertical-align: middle;
+}
