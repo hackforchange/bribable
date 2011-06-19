@@ -46,11 +46,7 @@ var Bribable = {
   renderMessageMarkers: function(map) {
     var lat = map.getCenter().lat();
     var long = map.getCenter().lng();
-    console.debug(lat);
-    console.debug(long);
     $.getJSON('/messages?lat=' + lat + '&long=' + long, function(messages) {
-      console.debug(messages);
-
       $.each(messages, function(index, message) {
         var newLatLng = new google.maps.LatLng(message["location"][0], message["location"][1]);
         new google.maps.Marker({
@@ -65,7 +61,6 @@ var Bribable = {
 
   renderMessages : function(messages) {
     var messages_div = $("ul#messages");
-    console.debug(messages_div);
 
     $(messages_div).html("");
 
@@ -100,9 +95,7 @@ var Bribable = {
         Bribable.createCircle();
         google.maps.event.addListener(map, 'bounds_changed', function() {
           Bribable.circle.setCenter(map.getCenter());
-          console.debug(Bribable.showMessages);
           if (Bribable.showMessages) {
-            console.debug("here");
             Bribable.renderMessageMarkers(map);
           } else {
             Bribable.resetFormValues(map);
