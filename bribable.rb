@@ -66,7 +66,7 @@ class BribableApp < Sinatra::Base
     longitude = params['long']
 
     if request.xhr?
-      Message.where(:location.near_max => [[latitude.to_f, longitude.to_f], 0.02]).desc(:created_at).to_json(:methods => :s3_image_url)
+      Message.where(:location.near_max => [[latitude.to_f, longitude.to_f], 0.02]).desc(:created_at).to_json(:methods => [:s3_image_url, :view_url])
     else
       erb :messages
     end

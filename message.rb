@@ -18,4 +18,8 @@ class Message
   def s3_image_url
     self.image.url
   end
+
+  def view_url
+    "/messages?lat=#{self.lat}&long=#{self.lng}"
+  end
 end

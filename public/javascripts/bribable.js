@@ -65,12 +65,13 @@ var Bribable = {
     $(messages_div).html("");
 
     $.each(messages, function(index, message) {
-        if (message['s3_image_url'] == "null") {
-        $(messages_div).append("<li>" + "<img src='images/trollface.png'>" + message['message'] + ' ' + jQuery.timeago(message['created_at']) + "</li>");
-        }
-        else {
-        $(messages_div).append("<li>" + "<img src=\'"+ message['s3_image_url'] + "\'>" + message['message'] + ' ' + jQuery.timeago(message['created_at']) + "</li>");
-        }
+      var twitter_link = '<a style="float: right" href="http://twitter.com/share" class="twitter-share-button" data-url=""'+ message['view_url']+'"data-text="Check this out!" data-count="horizontal" data-via="curruptmobi">Tweet</a><script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>';
+      if (message['s3_image_url'] == "null") {
+        $(messages_div).append("<li>" + "<img src='images/trollface.png'>" + message['message'] + ' ' + jQuery.timeago(message['created_at']) + twitter_link +"</li>");
+      }
+      else {
+        $(messages_div).append("<li>" + "<img src=\'" + message['s3_image_url'] + "\'>" + message['message'] + ' ' + jQuery.timeago(message['created_at']) + twitter_link +"</li>");
+      }
     });
 
     $(messages_div).effect("highlight", {}, 3000);
