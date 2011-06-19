@@ -50,6 +50,8 @@ class BribableApp < Sinatra::Base
   end
 
   post '/messages' do
+    user_lat = params['initial']['lat']
+    user_long = params['initial']['long']
     message = params['message']['message']
     latitude = params['message']['lat']
     longitude = params['message']['long']
@@ -61,11 +63,13 @@ class BribableApp < Sinatra::Base
         Message.new(:message => message, :location => {:lat => latitude.to_f, :lng => longitude.to_f})
       end
     new_message.save
-    redirect '/messages'
+    redirect "/messages?lat=#{user_lat}&long=#{user_long}"
   end
 
   get '/messages' do
-    @messages = Message.all
+    latitude = params['lat']
+    longitude = params['long']
+    @messages = Message.geo_near(:location => [latitude, longitude])
     erb :messages
   end
 end

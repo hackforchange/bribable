@@ -18,6 +18,11 @@
       $('input#lat').val(map.getCenter().lat());
     }
 
+    function saveInitialLocation(lat, long){
+      $('input#initial_lat').val(lat);
+      $('input#initial_long').val(long);
+    }
+
     function initialize() {
       var myOptions = {
         zoom: 15,
@@ -31,8 +36,8 @@
         browserSupportFlag = true;
         navigator.geolocation.getCurrentPosition(function(position) {
           initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          saveInitialLocation(position.coords.latitude, position.coords.longitude);
           map.setCenter(initialLocation);
-
           var center_circle = {
             strokeColor: "#FF0000",
             strokeOpacity: 1,
@@ -67,8 +72,6 @@
         browserSupportFlag = false;
         handleNoGeolocation(browserSupportFlag);
       }
-
-
     }
 
     function handleNoGeolocation(errorFlag) {
@@ -97,8 +100,10 @@
     </header>
     <article>
     <form action="/messages" accept-charset="UTF-8" method="post" id="corrupt-form" enctype="multipart/form-data">
-      <input type="hidden" id="long" name="message[long]" value="">
       <input type="hidden" id="lat" name="message[lat]" value="">
+      <input type="hidden" id="long" name="message[long]" value="">
+      <input type="hidden" id="initial_lat" name="initial[lat]" value="">
+      <input type="hidden" id="initial_long" name="initial[long]" value="">
       <h2>What happened?</h2>
       <p>Type in what happened. Put names in quotes like 'Dr Evil'.</p>
 
