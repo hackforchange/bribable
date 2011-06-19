@@ -60,17 +60,17 @@ var Bribable = {
   },
 
   renderMessages : function(messages) {
-    var messages_div = $("ul#messages");
+    var messages_div = $("table#messages");
 
     $(messages_div).html("");
 
     $.each(messages, function(index, message) {
-      var twitter_link = '<a style="float: right" href="http://twitter.com/share" class="twitter-share-button" data-url=""'+ message['view_url']+'"data-text="Check this out!" data-count="horizontal" data-via="curruptmobi">Tweet</a><script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>';
+      var twitter_link = '<a href="http://twitter.com/share" class="twitter-share-button twitter_this" data-url=""'+ message['view_url']+'"data-text="Check this out!" data-count="horizontal" data-via="curruptmobi">Tweet</a><script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>';
       if (message['s3_image_url'] == "null") {
-        $(messages_div).append("<li>" + "<img src='images/trollface.png'>" + message['message'] + ' ' + jQuery.timeago(message['created_at']) + twitter_link +"</li>");
+        $(messages_div).append("<tr><td><img class='picture' src='images/trollface.png'></td><td>" + message['message'] + '</td> ' + jQuery.timeago(message['created_at']) + "<td>" + twitter_link + "</td></tr>");
       }
       else {
-        $(messages_div).append("<li>" + "<img src=\'" + message['s3_image_url'] + "\'>" + message['message'] + ' ' + jQuery.timeago(message['created_at']) + twitter_link +"</li>");
+        $(messages_div).append("<tr><td><img class='picture' src=\'" + message['s3_image_url'] + "\'></td><td>" + message['message'] + '</td> ' + jQuery.timeago(message['created_at']) + "<td>" +twitter_link +"</td> </tr>");
       }
     });
 

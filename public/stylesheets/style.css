@@ -58,20 +58,41 @@ textarea {
   font-size: 1.2em !important;
 }
 
-.sub #page ul#messages {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow-y: hidden;
+table#messages {
+  width: 600px;
+  font-size: 140%;
 }
 
-.sub #page ul#messages li{
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: .5em;
-  list-style-type: none;
+table#messages tr{
+  margin: 0.5em 0;
 }
 
-.sub #page ul#messages li img{
+table#messages tr td{
   vertical-align: middle;
 }
+
+/*.sub #page ul#messages li{*/
+  /*overflow-y: auto;*/
+  /*overflow-x: hidden;*/
+  /*padding: .5em;*/
+  /*margin: 2em;*/
+  /*list-style-type: none;*/
+  /*vertical-align: middle;*/
+/*}*/
+
+/*.sub #page ul#messages li .picture{*/
+  /*float: left*/
+/*}*/
+
+/*.sub #page ul#messages li .message{*/
+  /*text-align: center;*/
+  /*vertical-align: middle*/
+/*}*/
+/*.sub #page ul#messages li .tweet_this{*/
+  /*float: right;*/
+  /*vertical-align: middle;*/
+/*}*/
+
+/*.sub #page ul#messages li img{*/
+  /*vertical-align: middle;*/
+/*}*/
