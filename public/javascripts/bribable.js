@@ -70,7 +70,12 @@ var Bribable = {
     $(messages_div).html("");
 
     $.each(messages, function(index, message) {
-      $(messages_div).append("<li>" + "<img src=\'"+ message['s3_image_url'] + "\'>" + message['message'] + ' ' + jQuery.timeago(message['created_at']) + "</li>");
+        if (message['s3_image_url'] == "null") {
+        $(messages_div).append("<li>" + "<img src='images/trollface.png'>" + message['message'] + ' ' + jQuery.timeago(message['created_at']) + "</li>");
+        }
+        else {
+        $(messages_div).append("<li>" + "<img src=\'"+ message['s3_image_url'] + "\'>" + message['message'] + ' ' + jQuery.timeago(message['created_at']) + "</li>");
+        }
     });
 
     $(messages_div).effect("highlight", {}, 3000);
