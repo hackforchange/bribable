@@ -6,125 +6,60 @@
   <link href="stylesheets/style.css" rel="stylesheet" type="text/css"/>
   <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/bribable.js"></script>
   <script type="text/javascript">
-
-    var initialLocation;
-    var base_location = new google.maps.LatLng(40.69847032728747, -73.9514422416687);
-    var browserSupportFlag = new Boolean();
-    var map;
-
-    function resetFormValues(map) {
-      $('input#long').val(map.getCenter().lng());
-      $('input#lat').val(map.getCenter().lat());
-    }
-
-    function saveInitialLocation(lat, long){
-      $('input#initial_lat').val(lat);
-      $('input#initial_long').val(long);
-    }
-
-    function initialize() {
-      var myOptions = {
-        zoom: 15,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-      map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-
-
-      // Try W3C Geolocation method (Preferred)
-      if (navigator.geolocation) {
-        browserSupportFlag = true;
-        navigator.geolocation.getCurrentPosition(function(position) {
-          initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-          saveInitialLocation(position.coords.latitude, position.coords.longitude);
-          map.setCenter(initialLocation);
-          var center_circle = {
-            strokeColor: "#FF0000",
-            strokeOpacity: 1,
-            strokeWeight: 1,
-            fillColor: "#FF0000",
-            fillOpacity: .2,
-            radius: 50,
-            map: map,
-            center: map.getCenter()
-          };
-
-          cityCircle = new google.maps.Circle(center_circle);
-          google.maps.event.addListener(map, 'bounds_changed', function() {
-            cityCircle.setCenter(map.getCenter());
-            resetFormValues(map);
-          });
-
-        }, function() {
-          handleNoGeolocation(browserSupportFlag);
-        });
-      } else if (google.gears) {
-        // Try Google Gears Geolocation
-        browserSupportFlag = true;
-        var geo = google.gears.factory.create('beta.geolocation');
-        geo.getCurrentPosition(function(position) {
-          initialLocation = new google.maps.LatLng(position.latitude, position.longitude);
-        }, function() {
-          handleNoGeolocation(browserSupportFlag);
-        });
-      } else {
-        // Browser doesn't support Geolocation
-        browserSupportFlag = false;
-        handleNoGeolocation(browserSupportFlag);
-      }
-    }
-
-    function handleNoGeolocation(errorFlag) {
-      if (errorFlag == true) {
-        initialLocation = base_location;
-        contentString = "Error: The Geolocation service failed.";
-      } else {
-        initialLocation = base_location;
-        contentString = "Error: Your browser doesn't support geolocation";
-      }
-      map.setCenter(initialLocation);
-    }
-
-
+    $(document).ready(function() {
+      Bribable.init({showMessages: false});
+    });
   </script>
 </head>
-<body onload="initialize()" class="sub">
-    <header id="header">
-      <div id="logo">
-      <img src="images/corrupt.png">
-      </div>
-     </header>
-     <section id="page">
-    <header class="page-header">
-      <h1>Report Corruption Anonymously</h1>
-    </header>
-    <article>
+<body class="sub">
+<header id="header">
+  <div id="logo">
+    <img src="images/corrupt.png">
+  </div>
+</header>
+<section id="page">
+  <header class="page-header">
+    <h1>Report Corruption Anonymously</h1>
+  </header>
+  <article>
     <form action="/messages" accept-charset="UTF-8" method="post" id="corrupt-form" enctype="multipart/form-data">
       <input type="hidden" id="lat" name="message[lat]" value="">
       <input type="hidden" id="long" name="message[long]" value="">
       <input type="hidden" id="initial_lat" name="initial[lat]" value="">
       <input type="hidden" id="initial_long" name="initial[long]" value="">
+
       <h2>What happened?</h2>
+
       <p>Type in what happened. Put names in quotes like 'Dr Evil'.</p>
 
       <textarea name="message[message]" rows="8" cols="40"></textarea>
-          <h2>Where did this happen?</h2>
-          <p>Pinpoint the location as accurately as you can by dragging the map</p>
-        <div id="map_container">
-          <div id="map_canvas"></div>
-        </div>
 
-        <h2>Upload an Image</h2>
-        <p>Select a file and catch that bastard.</p>
-        <p><input type="file" name="message[image]"></p>
+      <h2>Where did this happen?</h2>
+
+      <p>Pinpoint the location as accurately as you can by dragging the map</p>
+
+      <div id="map_container">
+        <div id="map_canvas"></div>
+      </div>
+
+      <h2>Upload an Image</h2>
+
+      <p>Select a file and catch that bastard.</p>
+
+      <p><input type="file" name="message[image]"></p>
 
       <p><input type="submit" name="op" id="submit_corruption" value="Submit" class="form-submit"></p>
 
     </form>
-    </article>
-      <footer id="footer">
-        <p><a href="http://www.corrupt.mobi">Corrupt.mobi</a> is a <a href="http://www.hackforchange.com">HackforChange</a> project inspired by <a href="http://hackforchange.uservoice.com/forums/113515-hack-for-change/suggestions/1931313-help-save-monterrey-mexico-if-monterrey-falls-m">Help Save Monterrey, Mexico</a></p>
-      </footer>
-    </section>
+  </article>
+  <footer id="footer">
+    <p><a href="http://www.corrupt.mobi">Corrupt.mobi</a> is a <a href="http://www.hackforchange.com">HackforChange</a>
+      project inspired by
+      <a href="http://hackforchange.uservoice.com/forums/113515-hack-for-change/suggestions/1931313-help-save-monterrey-mexico-if-monterrey-falls-m">Help
+        Save Monterrey, Mexico</a></p>
+  </footer>
+</section>
 </body>
 </html>
