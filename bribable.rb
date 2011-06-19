@@ -52,14 +52,17 @@ class BribableApp < Sinatra::Base
   end
 
   post '/messages' do
-    pp params
-    message = Message.new(params['message'])
-    message.save
+    message = params['message']['message']
+    latitude = params['message']['lat']
+    longitude = params['message']['long']
+
+    new_message = Message.new(:message => message, :location => {:lat => latitude, :lng => longitude})
+    new_message.save
+    redirect '/corruption'
   end
 
   get '/corruption' do
     @offenses = Message.all.to_a
-    pp @offenses.inspect
     erb :messages
   end
 end
