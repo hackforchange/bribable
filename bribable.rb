@@ -56,13 +56,13 @@ class BribableApp < Sinatra::Base
     latitude = params['message']['lat']
     longitude = params['message']['long']
 
-    new_message = Message.new(:message => message, :location => {:lat => latitude, :lng => longitude})
+    new_message = Message.new(:message => message, :location => {:lat => latitude.to_i, :lng => longitude.to_i})
     new_message.save
-    redirect '/corruption'
+    redirect '/messages'
   end
 
-  get '/corruption' do
-    @offenses = Message.all.to_a
+  get '/messages' do
+    @messages = Message.all
     erb :messages
   end
 end

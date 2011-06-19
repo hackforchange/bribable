@@ -1,19 +1,9 @@
-<% @offenses = [{"id"=>3,"long"=>"-122.40524578428057",
-   "lat"=>"37.774431486555564",
-   "created_at" => Time.now,
-   "message"=>"dfsdfdsfdsdfdsf"},{"id"=>2, "long"=>"-122.70524588428057",
-      "lat"=>"37.874431486554564",
-      "created_at" => Time.now + 1.minute,
-      "message"=>"dfsdfdsfdsdfdsf"}]%>
-
-
 <html>
-
 <head>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
   <link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css"/>
-  <link href="stylesheets/layout.css" rel="stylesheet" type="text/css"/>  
-  <link href="stylesheets/style.css" rel="stylesheet" type="text/css"/>  
+  <link href="stylesheets/layout.css" rel="stylesheet" type="text/css"/>
+  <link href="stylesheets/style.css" rel="stylesheet" type="text/css"/>
   <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
   <script type="text/javascript">
@@ -28,14 +18,14 @@
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-      <% @offenses.each do |offense|  %>
-      var newLatLng = new google.maps.LatLng(<%=offense["lat"]%>, <%=offense["long"]%>); 
-      var marker<%=offense["id"]%> = new google.maps.Marker({
-           position: newLatLng, 
-           map: map, 
-           title:"Hello World!"
-       });
-       <% end %>
+    <% @messages.each do |message|  %>
+      var newLatLng = new google.maps.LatLng(<%=message["lat"]%>, <%=message["long"]%>);
+      var marker<%=message["_id"]%> = new google.maps.Marker({
+        position: newLatLng,
+        map: map,
+        title:"Hello World!"
+      });
+    <% end %>
 
       // Try W3C Geolocation method (Preferred)
       if (navigator.geolocation) {
@@ -84,29 +74,33 @@
   </script>
 </head>
 <body onload="initialize()" class="sub">
-    <header id="header">
-      <div id="logo">
-      <img src="images/corrupt.png">
-      </div>
-     </header>
-     <section id="page">
-    <header class="page-header">
-      <h1>Corruption Near You</h1>
-    </header>
-    <article>
-      <h2>Locations of Reported Corruption</h2>
-        <div id="corruption_map_container">
-          <div id="map_canvas"></div>
-        </div>      
-        <ul>
-          <% @offenses.each do |offense|%>
-          <li><%=offense["created_at"].strftime("%m/%y/%d %H:%M")%> <%=offense["message"]%></li>
-          <% end %>
-          
-    </article>
-      <footer id="footer">
-        <p><a href="http://www.corrupt.mobi">Corrupt.mobi</a> is a <a href="http://www.hackforchange.com">HackforChange</a> project inspired by <a href="http://hackforchange.uservoice.com/forums/113515-hack-for-change/suggestions/1931313-help-save-monterrey-mexico-if-monterrey-falls-m">Help Save Monterrey, Mexico</a></p>
-      </footer>
-    </section>
+<header id="header">
+  <div id="logo">
+    <img src="images/corrupt.png">
+  </div>
+</header>
+<section id="page">
+  <header class="page-header">
+    <h1>Corruption Near You</h1>
+  </header>
+  <article>
+    <h2>Locations of Reported Corruption</h2>
+
+    <div id="corruption_map_container">
+      <div id="map_canvas"></div>
+    </div>
+    <ul>
+      <% @messages.each do |message| %>
+        <li><%= message["created_at"].strftime("%m/%y/%d %H:%M") %> <%= message["message"] %></li>
+      <% end %>
+    </ul>
+  </article>
+  <footer id="footer">
+    <p><a href="http://www.corrupt.mobi">Corrupt.mobi</a> is a <a href="http://www.hackforchange.com">HackforChange</a>
+      project inspired by
+      <a href="http://hackforchange.uservoice.com/forums/113515-hack-for-change/suggestions/1931313-help-save-monterrey-mexico-if-monterrey-falls-m">Help
+        Save Monterrey, Mexico</a></p>
+  </footer>
+</section>
 </body>
 </html>
