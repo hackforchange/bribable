@@ -14,12 +14,13 @@ Version: 0.1
 }
 
 input#submit_corruption {
-    background-color: #96A044;
+    background-color: #0f212e;
     padding: 15px;
     font-size: 1.75em;
     color: white;
     border: none;
     text-transform: uppercase;
+    margin-top: 25px;
 }
 
 textarea {
