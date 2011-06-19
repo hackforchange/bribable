@@ -10,7 +10,7 @@ require 'pp'
 require 'erb'
 
 class BribableApp < Sinatra::Base
-
+  :static
   configure do
     Mongoid.configure do |config|
       if ENV['MONGOHQ_URL']
