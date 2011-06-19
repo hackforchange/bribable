@@ -70,7 +70,7 @@ var Bribable = {
     $(messages_div).html("");
 
     $.each(messages, function(index, message) {
-      $(messages_div).append("<li>" + message['message'] + ' ' + jQuery.timeago(message['created_at']) + "</li>");
+      $(messages_div).append("<li>" + "<img src=\'"+ message['s3_image_url'] + "\'>" + message['message'] + ' ' + jQuery.timeago(message['created_at']) + "</li>");
     });
 
     $(messages_div).effect("highlight", {}, 3000);

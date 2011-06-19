@@ -12,4 +12,10 @@ class Message
 
   geo_index :location
   mount_uploader :image, ImageUploader
+
+  attr_accessor :s3_image_url
+
+  def s3_image_url
+    self.image.url
+  end
 end

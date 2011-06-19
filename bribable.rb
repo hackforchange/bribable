@@ -27,26 +27,20 @@ class BribableApp < Sinatra::Base
       end
     end
     CarrierWave.configure do |config|
-      config.grid_fs_database = Mongoid.database.name
-      config.grid_fs_host = Mongoid.config.master.connection.host
-      config.storage = :grid_fs
-      config.grid_fs_access_url = "/images/uploads/"
+      config.storage = :fog
+      config.fog_credentials = {
+        :provider => 'AWS',
+        :aws_access_key_id => ENV['S3_KEY'],
+        :aws_secret_access_key => ENV['S3_SECRET'],
+        :region => 'us-east-1' # optional, defaults to 'us-east-1'
+      }
+      config.fog_directory = 'bribable_development'
+      config.fog_attributes = {'Cache-Control'=>'max-age=315576000'}
     end
   end
 
   get '/' do
     erb :index
-  end
-
-  get '/images/uploads/*' do
-    filename = env["PATH_INFO"].gsub("/images/uploads/", "")
-    begin
-      gridfs_file = Mongo::GridFileSystem.new(Mongoid.database).open(filename, 'r')
-      gridfs_file.read
-    rescue Exception => e
-      puts e.message
-      puts e.bactrace
-    end
   end
 
   post '/messages' do
@@ -71,7 +65,7 @@ class BribableApp < Sinatra::Base
     longitude = params['long']
 
     if request.xhr?
-      Message.geo_near([latitude.to_f, longitude.to_f], :location).desc(:created_at).to_json
+      Message.geo_near([latitude.to_f, longitude.to_f], :location).desc(:created_at).to_json(:methods => :s3_image_url)
     else
       erb :messages
     end

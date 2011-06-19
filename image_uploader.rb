@@ -1,3 +1,7 @@
 class ImageUploader < CarrierWave::Uploader::Base
-  storage :grid_fs
+  storage :fog
+
+  def extension_white_list
+    %w(jpg jpeg gif png)
+  end
 end
