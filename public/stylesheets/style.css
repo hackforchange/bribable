@@ -13,6 +13,11 @@ Version: 0.1
     position:relative;
 }
 
+#corruption_map_container {
+    height: 350px;
+    position:relative;
+}
+
 input#submit_corruption {
     background-color: #0f212e;
     padding: 15px;

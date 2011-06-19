@@ -53,16 +53,13 @@ class BribableApp < Sinatra::Base
 
   post '/messages' do
     pp params
-    message = Message.new(:message => params['message'])
+    message = Message.new(params['message'])
     message.save
   end
 
-  get '/messages' do
-    latitude = params['lat'].to_i
-    longitude = params['long'].to_i
-
-    if latitude && longitude
-      Message.near(:location => [latitude, longitude]).to_json
-    end
+  get '/corruption' do
+    @offenses = Message.all.to_a
+    pp @offenses.inspect
+    erb :messages
   end
 end
