@@ -30,7 +30,7 @@ class BribableApp < Sinatra::Base
       config.grid_fs_database = Mongoid.database.name
       config.grid_fs_host = Mongoid.config.master.connection.host
       config.storage = :grid_fs
-      config.grid_fs_access_url = "/images"
+      config.grid_fs_access_url = "/images/uploads/"
     end
   end
 
@@ -39,15 +39,13 @@ class BribableApp < Sinatra::Base
   end
 
   get '/images/uploads/*' do
-    gridfs_path = env["PATH_INFO"].gsub("/images/", "")
+    filename = env["PATH_INFO"].gsub("/images/uploads/", "")
     begin
-      gridfs_file = Mongo::GridFileSystem.new(Mongoid.database).open(gridfs_path, 'r')
-      self.response_body = gridfs_file.read
-      self.content_type = gridfs_file.content_type
-    rescue
-      self.status = :file_not_found
-      self.content_type = 'text/plain'
-      self.response_body = ''
+      gridfs_file = Mongo::GridFileSystem.new(Mongoid.database).open(filename, 'r')
+      gridfs_file.read
+    rescue Exception => e
+      puts e.message
+      puts e.bactrace
     end
   end
 
@@ -56,7 +54,12 @@ class BribableApp < Sinatra::Base
     latitude = params['message']['lat']
     longitude = params['message']['long']
 
-    new_message = Message.new(:message => message, :location => {:lat => latitude.to_i, :lng => longitude.to_i})
+    new_message =
+      if params['message']['image']
+        Message.new(:message => message, :location => {:lat => latitude.to_f, :lng => longitude.to_f}, :image => params['message']['image'])
+      else
+        Message.new(:message => message, :location => {:lat => latitude.to_f, :lng => longitude.to_f})
+      end
     new_message.save
     redirect '/messages'
   end
