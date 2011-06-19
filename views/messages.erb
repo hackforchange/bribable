@@ -19,7 +19,7 @@
       };
       map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
     <% @messages.each do |message|  %>
-      var newLatLng = new google.maps.LatLng(<%=message["lat"]%>, <%=message["long"]%>);
+      var newLatLng = new google.maps.LatLng(<%=message["location"][0]%>, <%=message["location"][1]%>);
       var marker<%=message["_id"]%> = new google.maps.Marker({
         position: newLatLng,
         map: map,
