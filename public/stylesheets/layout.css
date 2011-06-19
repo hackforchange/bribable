@@ -31,15 +31,6 @@ body {
 
 
 
-#logo a {
-  display: block;
-  overflow: hidden;
-  text-indent: -9999px;
-  background: url(../images/jquery-mobile-logo.png) no-repeat;
-  width: 186px;
-  height: 57px;
-}
-
 #logo {
   position: absolute;
   top: 50px;
